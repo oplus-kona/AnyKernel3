@@ -53,6 +53,7 @@ setup_mountpoint() {
 }
 is_mounted() { mount | grep -q " $1 "; }
 mount_apex() {
+  return 0; # boot/dtbo-only zips don't need APEX; loop-mounting dozens of images wedges some recoveries
   [ -d /system_root/system/apex ] || return 1;
   local apex dest loop minorx num shcon var;
   setup_mountpoint /apex;
@@ -102,6 +103,7 @@ mount_apex() {
   touch /apex/apexak3;
 }
 umount_apex() {
+  return 0; # nothing mounted by mount_apex
   [ -f /apex/apexak3 ] || return 1;
   echo "Unmounting apex..." >&2;
   local dest loop var;
